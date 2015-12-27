@@ -1,0 +1,53 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-top">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <%= link_to "Home", root_url, class: "navbar-brand" %>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-top">
+      <ul class="nav navbar-nav navbar-right">
+        <% if user_signed_in? %>
+          <li id="header_inbox_bar" class="dropdown">
+            <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                <i class="fa fa-envelope-o"></i>
+                <% if (num_of_new_msg = num_of_new_messages) > 0 %>
+                  <span class="badge bg-theme"><%= num_of_new_msg %></span>
+                <% else %>
+                  <span class="badge bg-theme"></span>
+                <% end %>
+            </a>
+            <ul class="dropdown-menu extended inbox" data-page="0">
+                <div class="notify-arrow notify-arrow-green"></div>
+                <div class="top">
+                  <% if (num_of_unread = num_of_unread_messages) > 0 %>
+                    <span class="inbox-number-unread" data-num= <%= num_of_unread %> >Inbox (<%= num_of_unread %>)</span>
+                  <% else %>
+                    <span class="inbox-number-unread" data-num= <%= num_of_unread %> >Inbox</span>
+                  <% end %>
+
+                  <a class="send-new-message" href="#">
+                    Send a new message
+                  </a>
+                </div>
+
+                <div class="middle">
+                  <p class='text-center loading-icon'><i class='fa fa-spinner'></i> Loading...</p>
+                </div>
+
+                <div class="bottom">
+                  <li class="see-all-messages">
+                    <%= link_to 'See all messages', main_app.messages_path %>
+                  </li>
+                </div>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>

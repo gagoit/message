@@ -1,0 +1,5 @@
+- if @last_timestamp.nil?
+  = render :partial => "chat_area", locals: {to: @friend}
+- else
+  - @messages.reverse.each do |msg|
+    = render :partial => "message", locals: {message: msg}

@@ -1,0 +1,21 @@
+- @messages.each do |msg|
+  - friend = (msg.created_by_id != current_user.id) ? msg.created_by : msg.received_by
+  - is_read = (msg.is_read == 1)
+  - status = is_read ? 'read' : 'unread'
+  - new_status = is_read ? 'unread' : 'read'
+              
+  %li.received-message{:class => status, :'data-uid' => friend.id, :'data-page' => 0, :'data-name' => friend.full_name, :'data-email' => friend.email}
+    %a{:href => "#"}
+      %div.photo.image-responsive
+        = image_tag(friend.get_avatar_url(:thumb), {:alt => "avatar"})
+      %div.subject
+        %span.from #{friend.full_name}
+        
+        %span.message
+          = msg.message
+        %span.time 
+          %i.fa.fa-clock-o
+          #{message_time msg.created_at}
+    %div.action
+      %span.glyphicon.glyphicon-remove.remove-msg{:'data-uid' => msg.id, title: "Remove"}
+      %span.mark-as-read.fa{:class => (is_read ? "fa-circle-o" : "fa-check-circle-o" ),:'data-uid' => msg.id, title: "Mark as #{new_status}"}

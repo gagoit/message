@@ -1,0 +1,46 @@
+.container#rally
+  .row
+    .col-xs-12.col-sm-12.col-md-12
+      
+      / page start
+      .chat-room.mt.messages-page
+        .left-side.hidden-xs.col-sm-4.col-md-4
+          .chat-room-head
+            - if (num_of_unread = num_of_unread_messages) > 0
+              %h4.pull-left.inbox-number-unread{:'data-num' => num_of_unread } Inbox (#{num_of_unread})
+            - else
+              %h4.pull-left.inbox-number-unread{:'data-num' => num_of_unread } Inbox
+
+          .search-area
+            %input#search_friend_on_conversations{type: :text, placeholder: "Search", role: "combobox"}
+          
+          %ul.conversations
+            - @messages.each do |msg|
+              - friend = msg.created_by
+              - friend = msg.received_by if msg.created_by_id == current_user.id
+              - is_read = (msg.is_read == 1)
+              - status = is_read ? 'read' : 'unread'
+              - new_status = is_read ? 'unread' : 'read'
+              
+              %li.received-message{:class => status, :'data-uid' => friend.id, :'data-page' => 0, :'data-name' => friend.full_name, :'data-email' => friend.email}
+                %a{:href => "#"}
+                  %div.photo.image-responsive
+                    = image_tag(friend.get_avatar_url(:thumb), {:alt => "avatar"})
+                  %div.subject
+                    %span.from #{friend.full_name}
+                    
+                    %span.message
+                      = msg.message
+
+                    %span.time 
+                      %i.fa.fa-clock-o
+                      #{message_time msg.created_at}
+                %div.action
+                  %span.glyphicon.glyphicon-remove.remove-msg{:'data-uid' => msg.id, title: "Remove"}
+                  %span.mark-as-read.fa{:class => (is_read ? "fa-circle-o" : "fa-check-circle-o" ),:'data-uid' => msg.id, title: "Mark as #{new_status}"}
+
+        .main-side.col-xs-12.col-sm-8.col-md-8
+          .chat-area
+          
+          .other-chat.non-display
+      / page end

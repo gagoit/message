@@ -1,0 +1,13 @@
+.group-rom{:'data-created-at' => message.created_at}
+  %div.photo.image-responsive
+    = image_tag(message.created_by.get_avatar_url(:thumb), {:alt => "avatar"})
+  %div.subject
+    %a{href: user_path(message.created_by), target: "_blank"}
+      %span.from #{message.created_by.full_name}
+    
+    %span.time 
+      %i.fa.fa-clock-o
+      #{message_time message.created_at}
+
+    %span.message
+      = message.message

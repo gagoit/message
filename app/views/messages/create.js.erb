@@ -1,0 +1,11 @@
+<% if @message.valid? %>
+  var message_div = '<div class="group-rom">'
+                    +  '<div class="first-part"><%= @message.created_by.full_name %></div>'
+                    +  '<div class="second-part"><%= @message.message %></div>'
+                    +  '<div class="third-part"><%= message_time(@message.created_at) %></div>'
+                    + '</div>';
+
+  RallyFitMessage.main_side.find(".chat-area .messages-content").append($(message_div));
+
+  RallyFitMessage.main_side.find(".chat-area #message").val("");
+<% end %>

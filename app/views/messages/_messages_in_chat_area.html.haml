@@ -1,0 +1,3 @@
+- messages ||= []
+- messages.reverse.each do |msg|
+  = render :partial => "message", locals: {message: msg}

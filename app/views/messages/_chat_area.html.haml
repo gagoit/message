@@ -1,0 +1,34 @@
+- to ||= nil 
+#chat-area{:'data-uid' => to.try(:id), :'data-user-name' => to.try(:user_name), :'data-last-timestamp' => Time.now}
+  - if to
+    .chat-room-head
+      .pull-left
+        %h4 #{to.full_name}
+      .pull-right
+        %button.btn.btn-primary#new-message New Message
+  - else
+    .chat-room-head
+      %h4 New Message
+
+    .new-to
+      %span To:
+      %input{type: :text, placeholder: "Name", role: "combobox", style: "width: 100%"}
+  
+  .messages-content
+    %p.text-center.loading-icon
+      %i.fa.fa-spinner
+        Loading...
+    - @messages.reverse.each do |msg|
+      = render :partial => "message", locals: {message: msg}
+ 
+  .msg-form-content
+    = form_for Message.new, :remote => true do |f|
+      = f.hidden_field :received_by_id, value: (to ? to.id : '')
+      .msg-form-inner
+        %textarea#message.message-form{:name => "message[message]", :placeholder => "Write a #{to ? 'reply' : 'message'}..."}
+      %p#post-loader
+        = image_tag "fb-loading.gif", class: "fb-loading-icon", width: "16", height: "11"
+      .msg-btn{:name => "action", :type => "button", :value => "Post"}
+        %span.press_enter Press Enter to send
+        %input#press_to_enter{:checked => "checked", :name => "enter", :type => "checkbox", :value => "1"}
+          %a#post_button.uibutton.large.confirm.btn.btn-primary Send
